@@ -1,0 +1,6 @@
+Revision history for Perl extension Algorithm::MCL.
+
+0.01  Sat Feb 11 21:22:08 2012
+	- original version; created by h2xs 1.23 with options
+		-Afn Algorithm::MCL
+
