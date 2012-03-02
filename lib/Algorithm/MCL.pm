@@ -1,26 +1,93 @@
 package Algorithm::MCL;
 
-# ABSTRACT: a really awesome library
+# ABSTRACT: perl module implementing Markov Cluster Algorithm using PDL 
 
 =head1 SYNOPSIS
 
-...
+use Algorithm::MCL;
 
-=method method_x
+my $obj1 = new MyClass;
+my $ref2 = {};
+my $ref3 = \"abc";
+my $ref4 = \$val1;
+my $ref5 = [];
 
-This method does something experimental.
+my $mcl1 = Algorithm::MCL->new();
 
-=method method_y
+# create graph by adding edges
+$mcl1->addEdge($obj1, $ref2);
+$mcl1->addEdge($obj1, $ref3);
+$mcl1->addEdge($ref2, $ref3);
+$mcl1->addEdge($ref3, $ref4);
+$mcl1->addEdge($ref4, $ref5);
 
-This method returns a reason.
+# run MCL algorithm on created graph
+my $clusters1 = $mcl1->run();
 
+# get clusters
+foreach my $cluster ( @$clusters1 ) {
+   print "Cluster size: ". scalar @$cluster. "\n";
+}
+
+
+####################################
+
+my $val1 = \"aaa";
+my $val2 = \"bbb";
+my $val3 = \"ccc";
+my $val4 = \"ddd";
+my $val5 = \"eee";
+
+my $mcl2 = Algorithm::MCL->new();
+$mcl2->addEdge($val1, $val2);
+$mcl2->addEdge($val1, $val3);
+$mcl2->addEdge($val2, $val3);
+$mcl2->addEdge($val3, $val4);
+$mcl2->addEdge($val4, $val5);
+
+my $clusters2 = $mcl2->run();
+
+# get clusters
+foreach my $cluster ( @$clusters2 ) {
+    print "Found Cluster\n";
+    foreach my $vertex ( @$cluster ) {
+        print "  Cluster element: ". $$vertex. "\n";
+    }
+}
+
+
+
+=head1 DESCRIPTION
+
+This module is perl implementation of Markov Cluster Algorithm (MCL) based on Perl Data Language (PDL).
+
+MCL is algorithm of finding clusters of vertices in graph. More information about MCL can be found at L<http://micans.org/mcl/>. There is also perl script implementing MCL - minimcl L<http://www.micans.org/mcl/scripts/minimcl>.
+
+This module try to solve two problems:
+- easy integration MCL in perl scripts and modules. Algorithm::MCL accept references as input and every reference will be found later in some cluster.
+- performance and scale. Algorithm::MCL use Perl Data Language for most of its processing. That means Algorithm::MCL can run very fast on very big clusters. Main Algorithm::MCL procedures are written with "pdlpp".
+
+
+=head1 METHODS
+
+=method new()
+
+create new Algorithm::MCL object that accumulate graph edges and process data.
+
+=method addEdge($ref1, $ref2, $distance)
+
+add new edge to graph. first two parameters are reference to vertex objects. third parameter is "distance measurement" between vetices. "distance measurement" should be number between 0 and 1. if "distance measurement" is not defined it set to 1.
+
+=method run()
+
+apply MCL algorithm on graph. return reference to array that every element is reference to cluser array.
 
 =cut
 
 
-use Mouse;
 use PDL;
 use Inline 'Pdlpp';
+use Mouse;
 
 no PDL::NiceSlice;
 
