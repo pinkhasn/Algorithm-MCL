@@ -1,8 +1,6 @@
 Changes
 Makefile.PL
 MANIFEST
-MCL.xs
-ppport.h
 README
 t/Algorithm-MCL.t
 lib/Algorithm/MCL.pm
